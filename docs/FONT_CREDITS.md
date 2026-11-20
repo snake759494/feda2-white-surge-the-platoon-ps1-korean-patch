@@ -10,4 +10,4 @@
 - 나눔스퀘어 네오: © NAVER Corporation, 디자인 Sandoll. SIL Open Font License 1.1 (`LICENSES/NanumSquareNeo-OFL-1.1.txt`)
 - 갈무리: © quiple(Minseo Lee). SIL Open Font License 1.1 (`LICENSES/Galmuri-OFL-1.1.txt`). https://github.com/quiple/galmuri
 
-글꼴 파일은 저장소에 포함하지 않습니다. 재빌드하려면 `NanumSquareNeo-cBd.ttf`·`NanumSquareNeo-eHv.ttf`·`Galmuri9.ttf`·`Galmuri11.ttf`·`Galmuri14.ttf`를 `fonts/`에 두세요.
+글꼴 파일은 저장소에 포함하지 않습니다. 재빌드하려면 `NanumSquareNeo-cBd.ttf`·`NanumSquareNeo-eHv.ttf`·`Galmuri7.ttf`·`Galmuri9.ttf`·`Galmuri11.ttf`·`Galmuri14.ttf`를 `fonts/`에 두세요.

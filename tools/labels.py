@@ -193,3 +193,49 @@ def patch_heisou(pix, clut):
                     pix[y0 + yy + 1, x0 + xx + 1] = light
                 pix[y0 + yy, x0 + xx] = dark
     return pix
+
+
+# ---- 장비 화면 패널 음각 라벨(KODAIRA 8bpp 256x256 원시 이미지, 팔레트는 SAYSUN 2번 TIM 과 공용)
+EQ_LABELS = [  # (이미지 오프셋, x0, y0, x1, y1, 채울 원본 행들, 글자(줄 단위))
+    (0xe8000, 51, 91, 86, 106, [106, 107, 90], ['무장']),
+    (0x108000, 13, 114, 80, 131, list(range(131, 139)), ['소지 아이템']),
+    (0xf8000, 145, 180, 177, 213, [213, 214, 215, 178, 179], ['무장', '상세']),
+]
+
+
+def engrave(pix, L, x0, y0, x1, y1, src, lines, size=14):
+    reg = pix[y0 - 2:y1 + 2, x0 - 2:x1 + 2]
+    used = np.unique(reg)
+    dark = int(used[np.argmin(np.abs(L[used] - 75))]); light = int(used[np.argmax(L[used])])
+    for i, y in enumerate(range(y0, y1)):
+        pix[y, x0:x1] = pix[src[i % len(src)], x0:x1]
+    S = 4
+    w = x1 - x0 - 2
+    lh = (y1 - y0 - 1) // len(lines)
+    for li, t in enumerate(lines):
+        sz = size
+        while True:
+            f = ImageFont.truetype(os.path.join(HERE, '..', 'fonts', 'NanumSquareNeo-eHv.ttf'), sz * S)
+            bb = f.getbbox(t)
+            if bb[2] - bb[0] <= w * S or sz <= 9: break
+            sz -= 1
+        h = lh
+        im = Image.new('L', (w * S, h * S), 0)
+        ImageDraw.Draw(im).text(((w * S - (bb[2] - bb[0])) // 2 - bb[0], (h * S - (bb[3] - bb[1])) // 2 - bb[1]), t, font=f, fill=255)
+        m = np.array(im.resize((w, h), Image.LANCZOS)) > 110
+        oy = y0 + li * lh
+        for yy in range(h):
+            for xx in range(w):
+                if m[yy, xx]:
+                    if yy + 1 < h and xx + 1 < w and not m[yy + 1, xx + 1]:
+                        pix[oy + yy + 1, x0 + xx + 1] = light
+                    pix[oy + yy, x0 + xx] = dark
+
+
+def patch_equip(kd, clut):
+    c = clut.astype(int).ravel()[:256]
+    L = ((c & 31) * 3 + ((c >> 5) & 31) * 6 + ((c >> 10) & 31)) * 8 // 10
+    for off, x0, y0, x1, y1, src, lines in EQ_LABELS:
+        a = np.frombuffer(bytes(kd[off:off + 65536]), np.uint8).reshape(256, 256).copy()
+        engrave(a, L, x0, y0, x1, y1, src, lines, 13 if len(lines) > 1 else 14)
+        kd[off:off + 65536] = a.tobytes()

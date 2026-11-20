@@ -282,6 +282,11 @@ def main(src, dst):
             if hg.is_hangul(c) and c not in FIXED and c not in exsyl:
                 exsyl.append(c)
     print('fixed', len(fx), 'exe-subset', len(exsyl))
+    import equip
+    nm = [k for jj, k, o in exs if 0x3900 <= o[0] <= 0x39f4] + ['바이퍼'] + [k for jj, k, o in exs if 0x38a0 <= o[0] <= 0x3b70]
+    small = equip.small_set([k.split('・')[0] for k in nm])
+    equip.patch_small_table(exe, small)
+    print('small', len(small))
     w.replace('/FEDA2.EXE', bytes(exe), allow_move=False)
     # 폰트1 사본 서명
     win0 = rd('/TIM/WINDATA.TIM')
@@ -292,12 +297,12 @@ def main(src, dst):
     sig = bytes(e0[po0 + 128 * 40:po0 + 128 * 40 + 64])
     for path in ('/TIM/BTLMAP.TIM', '/TIM/SAYSUN.TIM', '/BIN/KODAIRA.DAT'):
         b = bytearray(rd(path))
-        print(path, patch_font1(b, sig, assign))
+        print(path, patch_font1(b, sig, assign), equip.patch_small_font(b, sig, small))
         if path == '/BIN/KODAIRA.DAT':
             b, cst = camp_blocks(bytes(b), exsyl)
             for x in cst: print(*x)
             import labels
-            b = bytearray(b); labels.patch(b); labels.patch_ops(b); import title; title.patch(b)
+            b = bytearray(b); print('equip', equip.patch_block(b, archive(b), exsyl, {jj.strip('　'): kk for jj, kk, _ in reversed(exs)}, FIXED)); labels.patch(b); labels.patch_ops(b); import tim as _t0; labels.patch_equip(b, _t0.scan(bytes(rd('/TIM/SAYSUN.TIM')))[2]['clut']['data']); import title; title.patch(b)
         w.replace(path, bytes(b), allow_move=False)
 
     # ---- TIMDATA 나레이션 이미지
@@ -314,7 +319,7 @@ def main(src, dst):
     # ---- TXTDATA + WINDATA
     txt = rd('/TXTDATA.TXT')
     win = bytearray(rd('/TIM/WINDATA.TIM'))
-    print('WINDATA font1', patch_font1(win, sig, assign))
+    print('WINDATA font1', patch_font1(win, sig, assign), equip.patch_small_font(win, sig, small))
     print('WINDATA ops', patch_ops_copies(win))
     sy = bytearray(rd('/TIM/SAYSUN.TIM')); print('SAYSUN ops', patch_ops_copies(sy))
     import tim as _tim, numpy as _np, labels as _lb
