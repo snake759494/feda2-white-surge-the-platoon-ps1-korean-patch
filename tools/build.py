@@ -283,7 +283,10 @@ def main(src, dst):
                 exsyl.append(c)
     print('fixed', len(fx), 'exe-subset', len(exsyl))
     import equip
-    nm = [k for jj, k, o in exs if 0x3900 <= o[0] <= 0x39f4] + ['바이퍼'] + [k for jj, k, o in exs if 0x38a0 <= o[0] <= 0x3b70]
+    # 작은 글꼴 우선순위: 아군 이름 > 종족·소속(유닛 정보창) > 기타 병종명
+    def _g(f): return [k for jj, k, o in exs if any(f(x) for x in o)]
+    nm = (_g(lambda x: 0x3900 <= x <= 0x39f4) + ['바이퍼'] + _g(lambda x: 0x3a04 <= x <= 0x3b70)
+          + _g(lambda x: x in (0x16f8, 0x1704, 0x1724, 0x31b8)) + _g(lambda x: 0x38a0 <= x < 0x3900))
     small = equip.small_set([k.split('・')[0] for k in nm])
     equip.patch_small_table(exe, small)
     print('small', len(small))

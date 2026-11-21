@@ -1,5 +1,5 @@
 """릴리즈 xdelta 를 해시 검사 후 적용.
-사용: python tools/apply_release.py --xdelta xdelta3.exe --source "FEDA 2 - White Surge the Platoon (Japan).bin" --patch FEDA2_White_Surge_the_Platoon_PS1_KO_v1.1.xdelta --output "FEDA 2 - White Surge the Platoon (Korean).bin"
+사용: python tools/apply_release.py --xdelta xdelta3.exe --source "FEDA 2 - White Surge the Platoon (Japan).bin" --patch FEDA2_White_Surge_the_Platoon_PS1_KO_v1.2.xdelta --output "FEDA 2 - White Surge the Platoon (Korean).bin"
 결과 BIN 옆에 같은 이름의 CUE 를 만듭니다.
 """
 import argparse, hashlib, json, os, subprocess, sys

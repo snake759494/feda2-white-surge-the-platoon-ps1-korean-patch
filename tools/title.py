@@ -117,6 +117,22 @@ def render(text, w, h, bold):
     return np.clip((g * 15 + 127) // 255, 0, 15).astype(np.uint8)
 
 
+GAL = [(os.path.join(HERE, '..', 'fonts', 'Galmuri%d.ttf' % n), z) for n, z in ((11, 12), (9, 10))]
+
+
+def render_px(text, w, h):
+    """작은 칸용 픽셀 글꼴(선명하게): 갈무리11 → 9"""
+    for fp, z in GAL:
+        f = ImageFont.truetype(fp, z)
+        bb = f.getbbox(text)
+        if bb[2] - bb[0] <= w - 6:
+            break
+    im = Image.new('L', (w, h), 0)
+    d = ImageDraw.Draw(im); d.fontmode = '1'
+    d.text((5 - bb[0], (h - (bb[3] - bb[1])) // 2 - bb[1]), text, font=f, fill=255)
+    return (np.array(im) > 0).astype(np.uint8) * 15
+
+
 def page(kd, off, items):
     r = np.frombuffer(bytes(kd[off:off + 0x8000]), np.uint8).reshape(256, 128)
     a = np.empty((256, 256), np.uint8); a[:, 0::2] = r & 15; a[:, 1::2] = r >> 4
@@ -124,7 +140,10 @@ def page(kd, off, items):
         a[y0:y1, x0:x1] = 0
     for y0, y1, x0, x1, t in items:
         bold = t.startswith('#')
-        g = render(t.lstrip('#'), x1 - x0, y1 - y0, bold)
+        if t.endswith('작전') and not bold and off == PB:
+            g = render_px(t, x1 - x0, y1 - y0)
+        else:
+            g = render(t.lstrip('#'), x1 - x0, y1 - y0, bold)
         reg = a[y0:y1, x0:x1]
         np.maximum(reg, g, out=reg)
     kd[off:off + 0x8000] = ((a[:, 0::2] & 15) | (a[:, 1::2] << 4)).astype(np.uint8).tobytes()

@@ -149,7 +149,7 @@ def patch_block(kd, hdr, extra, exe_dict, fixed=()):
 STAB = 0x80099ec4 - 0x80010000 + 0x800
 SMALL_Y = 216
 # 한글로 바꿀 칸: 잘 안 쓰는 기호와 반각 가나 (숫자·영문·－．／・ 는 유지)
-SLOTS = list(range(1, 13)) + list(range(26, 33)) + list(range(59, 67)) + list(range(68, 128))
+SLOTS = list(range(1, 13)) + list(range(26, 33)) + list(range(59, 67)) + list(range(68, 128)) + [42, 49, 58]  # J Q Z 도 사용
 SLOTS = [i for i in SLOTS if i % 32 != 31]  # 각 행 마지막 칸(x=248)은 실행 중 다른 그림에 덮임
 GAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'fonts', 'Galmuri7.ttf')
 _sg = {}
@@ -166,6 +166,11 @@ def small_glyph(ch):
     body = a[1:8, 0:7]
     g = np.zeros((8, 8), np.uint8)
     sh = np.zeros((8, 8), bool); sh[1:8, 1:8] = body
+    B = np.zeros((10, 10), bool); B[1:8, 1:8] = body  # 1칸 여백
+    for r in range(8):
+        for c in range(8):
+            if sh[r, c] and ((B[r + 1, c] and B[r + 1, c + 2]) or (B[r, c + 1] and B[r + 2, c + 1])):
+                sh[r, c] = False  # 획 사이 틈은 그림자로 메우지 않음
     g[sh] = 8
     g[:7, :7][body] = 12
     _sg[ch] = g
@@ -177,7 +182,8 @@ def small_set(names):
     for nm in names:
         for c in nm:
             if hg.is_hangul(c) and c not in out: out.append(c)
-    return out[:len(SLOTS)]
+    assert len(out) <= len(SLOTS), (len(out), len(SLOTS))
+    return out
 
 
 def patch_small_table(exe, syl):
