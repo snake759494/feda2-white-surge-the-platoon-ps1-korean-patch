@@ -120,9 +120,9 @@ def render(text, w, h, bold):
 GAL = [(os.path.join(HERE, '..', 'fonts', 'Galmuri%d.ttf' % n), z) for n, z in ((11, 12), (9, 10))]
 
 
-def render_px(text, w, h):
+def render_px(text, w, h, big=False):
     """작은 칸용 픽셀 글꼴(선명하게): 갈무리11 → 9"""
-    for fp, z in GAL:
+    for fp, z in ([(os.path.join(HERE, '..', 'fonts', 'Galmuri14.ttf'), 15)] if big else []) + GAL:
         f = ImageFont.truetype(fp, z)
         bb = f.getbbox(text)
         if bb[2] - bb[0] <= w - 6:
@@ -142,6 +142,8 @@ def page(kd, off, items):
         bold = t.startswith('#')
         if t.endswith('작전') and not bold and off == PB:
             g = render_px(t, x1 - x0, y1 - y0)
+        elif t in ('처음부터', '파일1', '파일2', '파일3') and off == PB:
+            g = render_px(t, x1 - x0, y1 - y0, big=True)  # 기록 파일 카드: 흐릿한 ㅍ 방지
         else:
             g = render(t.lstrip('#'), x1 - x0, y1 - y0, bold)
         reg = a[y0:y1, x0:x1]

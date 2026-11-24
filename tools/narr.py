@@ -83,6 +83,7 @@ def patch_one(d, t, mode, lines, boxes):
     o = t['off']
     pix = np.frombuffer(bytes(d[o:o + w * h]), np.uint8).reshape(h, w).copy()
     P = Pal(t, pix)
+    orig = pix.copy()
     L = lum(t)
     global LO
     LO = 0
@@ -118,13 +119,18 @@ def patch_one(d, t, mode, lines, boxes):
             y += 16
         assert y <= h + 1, ('overflow', t['start'], y)
     LO = 0
+    # 상자 글씨색: 원본 상자들 안 글씨에 가장 많이 쓰인 색(날짜를 다른 팔레트로 보여 주는 화면 대비)
+    r = np.concatenate([orig[y0:y1, x0:x1].ravel() for (x0, y0, x1, y1), _ in boxes] or [np.zeros(0, np.uint8)])
+    r = r[r != P.bg]
+    white = int(np.bincount(r).argmax()) if r.size else P.white
     for (x0, y0, x1, y1), ln in boxes:
         pix[y0:y1, x0:x1] = P.bg
         left = ln.startswith('<')
         ln = ln.lstrip('<')
         g = text_img(ln, x1 - x0, y1 - y0, min(15, y1 - y0))
         X = x0 if left else x0 + (x1 - x0 - g.shape[1]) // 2
-        P.put(pix[y0:y1, X:X + g.shape[1]], g[:, :min(g.shape[1], w - X)])
+        reg = pix[y0:y1, X:X + g.shape[1]]; gg = g[:reg.shape[0], :reg.shape[1]]
+        reg[gg > 85] = white
     d[o:o + w * h] = pix.tobytes()
 
 

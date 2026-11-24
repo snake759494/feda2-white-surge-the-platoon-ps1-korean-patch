@@ -1,10 +1,10 @@
 # FEDA 2 화이트 서지 더 플래툰 PS1 한글패치
 
-PS1 일본판 **FEDA2 WHITE SURGE the PLATOON (SLPS-00723)**용 비공식 한국어 패치입니다. 이벤트·캠프·전투 대사와 메뉴, 명령, 병종·특수기·아이템 이름, 미션 조건, 전투 메시지를 모두 한국어로 바꿨습니다. **나레이션과 게임 오버 문장, 타이틀·파일 메뉴, 캠프 이름표, 작전명** 같은 그림 글자도 한글로 다시 그렸습니다. 현재 배포판은 **v1.3 (2026-11-21)**입니다.
+PS1 일본판 **FEDA2 WHITE SURGE the PLATOON (SLPS-00723)**용 비공식 한국어 패치입니다. 이벤트·캠프·전투 대사와 메뉴, 명령, 병종·특수기·아이템 이름, 미션 조건, 전투 메시지를 모두 한국어로 바꿨습니다. **나레이션과 게임 오버 문장, 타이틀·파일 메뉴, 캠프 이름표, 작전명** 같은 그림 글자도 한글로 다시 그렸습니다. 현재 배포판은 **v1.4 (2026-11-24)**입니다.
 
 [패치 다운로드](https://github.com/snake759494/feda2-white-surge-the-platoon-ps1-korean-patch/releases/latest) · [기술 설명](docs/TECHNICAL.md) · [재빌드](docs/BUILD.md) · [변경 기록](CHANGELOG.md) · [권리 안내](RIGHTS.md)
 
-릴리즈 첨부 파일은 한글패치 **FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta**뿐입니다. 저장소에는 제작 소스와 한국어 번역만 공개합니다. 원본·완성 디스크 이미지, 추출한 게임 파일, 일본어 원문, 글꼴 파일, 외부 실행 파일은 포함하지 않습니다. GitHub가 자동으로 만드는 Source code ZIP/TAR는 저장소 소스를 압축한 것이며 게임 파일이 아닙니다.
+릴리즈 첨부 파일은 한글패치 **FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta**뿐입니다. 저장소에는 제작 소스와 한국어 번역만 공개합니다. 원본·완성 디스크 이미지, 추출한 게임 파일, 일본어 원문, 글꼴 파일, 외부 실행 파일은 포함하지 않습니다. GitHub가 자동으로 만드는 Source code ZIP/TAR는 저장소 소스를 압축한 것이며 게임 파일이 아닙니다.
 
 ## 게임 소개 및 대상 버전
 
@@ -42,7 +42,7 @@ Get-FileHash -Algorithm MD5 -LiteralPath '.\FEDA 2 - White Surge the Platoon (Ja
 
 ### xdelta UI 사용
 
-1. 릴리즈에서 `FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta`를 받습니다.
+1. 릴리즈에서 `FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta`를 받습니다.
 2. xdelta3 패치를 지원하는 도구에서 **Apply Patch** 기능을 엽니다.
 3. **Patch**에는 xdelta 파일을, **Source File**에는 해시가 일치하는 원본 `.bin`을 선택합니다.
 4. **Output File**에는 새 파일 이름을 지정합니다(예: `FEDA 2 - White Surge the Platoon (Korean).bin`).
@@ -59,13 +59,13 @@ xdelta 자체는 [공식 프로젝트](https://github.com/jmacd/xdelta)를 참�
 ### 명령줄 사용
 
 ```powershell
-.\xdelta3.exe -d -s '.\FEDA 2 - White Surge the Platoon (Japan).bin' '.\FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta' '.\FEDA 2 - White Surge the Platoon (Korean).bin'
+.\xdelta3.exe -d -s '.\FEDA 2 - White Surge the Platoon (Japan).bin' '.\FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta' '.\FEDA 2 - White Surge the Platoon (Korean).bin'
 ```
 
 해시를 자동으로 검사하고 CUE까지 만들어 주는 도구도 있습니다. Python 3과 xdelta3가 필요하며, 같은 이름의 출력 파일이 이미 있으면 덮어쓰지 않습니다.
 
 ```powershell
-python tools/apply_release.py --xdelta '.\xdelta3.exe' --source '.\FEDA 2 - White Surge the Platoon (Japan).bin' --patch '.\FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta' --output '.\FEDA 2 - White Surge the Platoon (Korean).bin'
+python tools/apply_release.py --xdelta '.\xdelta3.exe' --source '.\FEDA 2 - White Surge the Platoon (Japan).bin' --patch '.\FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta' --output '.\FEDA 2 - White Surge the Platoon (Korean).bin'
 ```
 
 ### 실행

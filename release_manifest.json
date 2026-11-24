@@ -1,17 +1,17 @@
 {
- "version": "v1.3",
- "date": "2026-11-21",
+ "version": "v1.4",
+ "date": "2026-11-24",
  "game": "FEDA 2 - White Surge the Platoon (Japan) / SLPS-00723 / PS1 (CD, BIN/CUE 1트랙)",
- "asset": "FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta",
- "asset_size": 1579558,
- "asset_sha256": "5623bfdcde53cb7df83c4934b38801cf3ecd3457ff3b9c00ff99109a2354340b",
+ "asset": "FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta",
+ "asset_size": 1578555,
+ "asset_sha256": "20eddc848a3d5e975fec67e6d412e81f4ff2ba7eb6c87d64d9068848001ea9d8",
  "xdelta_options": "xdelta3 -e -f -s (압축 옵션 지정 없음)",
  "source_bin_size": 749227248,
  "source_bin_md5": "ba534cd2e7acaabbfbe5ec917110001e",
  "source_bin_sha1": "d0cfd504823cb0ec347a15a9640b802cc573e02e",
  "source_bin_sha256": "c5028c3150e05c37dc36f55903936f79dc193180f18442407a5380ad42a878fc",
  "output_bin_size": 749227248,
- "output_bin_md5": "bdfe08e3f8823856b1914ed4fb0afe59",
- "output_bin_sha1": "c480b9f94140595c2302609d91d70f4d0255a938",
- "output_bin_sha256": "dd961d1324107f17cb7e34e5739b85c390c71f65580014fc89e8027a6c4dd179"
+ "output_bin_md5": "be212e6b46d4f31b42f86d43135eb47a",
+ "output_bin_sha1": "df3f151fd0eaab0d7aa9175b7b662d45f57bac63",
+ "output_bin_sha256": "b4abd48e4db05af9078233dc7009c90e008f0785c3cf5befb0aba1f56e8dfaed"
 }

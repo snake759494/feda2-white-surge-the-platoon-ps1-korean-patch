@@ -25,7 +25,7 @@ python tools/build.py "..\FEDA 2 - White Surge the Platoon (Japan).bin" "..\FEDA
 ## 배포 파일
 
 ```powershell
-xdelta3 -e -f -s "FEDA 2 - White Surge the Platoon (Japan).bin" "FEDA 2 - White Surge the Platoon (Korean).bin" FEDA2_White_Surge_the_Platoon_PS1_KO_v1.3.xdelta
+xdelta3 -e -f -s "FEDA 2 - White Surge the Platoon (Japan).bin" "FEDA 2 - White Surge the Platoon (Korean).bin" FEDA2_White_Surge_the_Platoon_PS1_KO_v1.4.xdelta
 ```
 
 ## 번역 수정
